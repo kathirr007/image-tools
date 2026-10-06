@@ -18,7 +18,7 @@ export interface JobStats {
   fileName: string
 }
 
-export const CLIENT_MAX_BYTES = 4_000_000
+export const CLIENT_MAX_BYTES = 25 * 1024 * 1024 // Option B: 25MB (backend limit)
 
 export function formatBytes(n: number): string {
   if (!Number.isFinite(n))
@@ -54,7 +54,7 @@ export function useImageJob(endpoint: '/api/v1/optimize' | '/api/v1/convert') {
       previewUrl.value = URL.createObjectURL(f)
       originalSize.value = f.size
       if (f.size > CLIENT_MAX_BYTES)
-        error.value = `File is ${formatBytes(f.size)} — Vercel Hobby allows ~4.5MB. Try a smaller file.`
+        error.value = `File is ${formatBytes(f.size)} — max is ${formatBytes(CLIENT_MAX_BYTES)}. Try a smaller file.`
     }
   }
 
@@ -65,8 +65,8 @@ export function useImageJob(endpoint: '/api/v1/optimize' | '/api/v1/convert') {
       error.value = 'Upload an image first.'
       return
     }
-    if (file.value.size > 4_500_000) {
-      error.value = 'File too large for serverless (max ~4.5MB).'
+    if (file.value.size > CLIENT_MAX_BYTES) {
+      error.value = `File too large (max ${formatBytes(CLIENT_MAX_BYTES)}).`
       return
     }
     isProcessing.value = true
@@ -83,7 +83,9 @@ export function useImageJob(endpoint: '/api/v1/optimize' | '/api/v1/convert') {
       if (options.height)
         form.append('height', String(options.height))
 
-      const res = await fetch(endpoint, { method: 'POST', body: form })
+      const { apiBase } = useRuntimeConfig().public as { apiBase: string }
+      const url = `${(apiBase ?? '').replace(/\/$/, '')}${endpoint}`
+      const res = await fetch(url, { method: 'POST', body: form })
       if (!res.ok) {
         let msg = `Request failed (${res.status})`
         try {

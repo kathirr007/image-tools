@@ -39,7 +39,7 @@ useSeoMeta({
       <NuxtPage />
       <USeparator class="my-6" />
       <p class="text-xs text-muted text-center">
-        MVP runs fully serverless on Vercel (4.5MB upload cap, 10s timeout). No account, no subscription — files are processed in-memory and never stored.
+        Split deploy: frontend on Vercel, processing on dedicated backend (25MB / 8000px). Files are processed in-memory and never stored.
       </p>
     </UMain>
 

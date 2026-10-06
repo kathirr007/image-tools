@@ -15,6 +15,15 @@ export default defineNuxtConfig({
   // Flip to ssr:true later if you add SEO/marketing pages.
   ssr: false,
 
+  // Option B split deploy: frontend on Vercel, heavy processing on dedicated backend.
+  // Set NUXT_PUBLIC_API_BASE=https://your-backend.fly.dev (no trailing slash).
+  // Empty = same-origin Nuxt server routes (local dev / pure-Vercel fallback).
+  runtimeConfig: {
+    public: {
+      apiBase: ''
+    }
+  },
+
   nitro: {
     // sharp needs Node runtime (never edge) + room for image buffers
     preset: 'vercel'

@@ -1,8 +1,16 @@
-# Implementation Plan — Nuxt 4 Image Tools (Vercel)
+# Implementation Plan — Nuxt 4 Image Tools (Option B: split deploy)
 
-Target: `node-vue-image-optimizer/` — Nuxt 4 SPA + Nitro server routes + sharp, deployable to Vercel Hobby (pure-Vercel MVP, 4.5MB / 10s limits).
+Target: frontend Nuxt 4 SPA on Vercel + standalone Node backend (Express + sharp) on Fly/Render/VM.
+Prod limits: 25MB per image, 8000px max dimension, ~50MP pixel guard, 60–120s timeout.
 
 ## Progress
+
+- [x] MVP (pure-Vercel, 4.5MB) done + committed
+- [x] Standalone `backend/` Express service (25MB, CORS, Dockerfile, deploy configs) — verified: health + optimize (24KB→814B webp, 96.6%) + convert (→518B avif)
+- [x] Frontend points to backend via `NUXT_PUBLIC_API_BASE` (fallback to Nuxt server routes locally)
+- [x] Raise client cap 4MB → 25MB + copy updates
+- [x] Local verify: backend health + optimize/convert via curl, `pnpm build` passes — ✅
+- [x] Commit split-deploy — in progress
 
 - [x] Git repo initialized (`master`)
 - [x] Scaffold Nuxt 4 project (compatibilityVersion 4, Node 20, SPA mode) — `ui` template, Nuxt 4.5.2 + @nuxt/ui + Tailwind v4, pnpm

@@ -1,25 +1,34 @@
-# Image Tools — Optimize & Convert (Nuxt 4 + Vercel)
+# Image Tools — Optimize & Convert (Nuxt 4 + split deploy)
 
-Upload → optimize/convert → download. Nuxt 4 SPA + Nitro server routes + `sharp`. No subscription, no storage — files processed in-memory.
+Upload → optimize/convert → download. Frontend Nuxt 4 SPA on Vercel + standalone Node backend (Express + `sharp`). No subscription, no storage — files processed in-memory.
 
-## Routes
+## Routes (frontend)
 
-- `/optimize` — quality / format / resize / metadata / lossless → `POST /api/v1/optimize`
-- `/convert` — target format (+optional resize) → `POST /api/v1/convert`
-- `GET /api/health` — `{ ok: true }`
+- `/optimize` — quality / format / resize / metadata / lossless → `POST {API}/api/v1/optimize`
+- `/convert` — target format (+optional resize) → `POST {API}/api/v1/convert`
+- `GET {API}/api/health` — `{ ok: true, maxUploadMB: 25 }`
 
 API returns the processed image binary with `Content-Disposition: attachment` + stat headers (`X-Original-Size`, `X-Optimized-Size`, `X-Savings-Percent`, `X-Output-Format/Width/Height`).
 
-## Quick start
+## Quick start (local, same-origin fallback)
 
 ```bash
 pnpm install
-pnpm dev        # http://localhost:3000
+pnpm dev        # http://localhost:3000 (uses built-in Nitro routes, 4.5MB cap)
 ```
 
-## Deploy to Vercel
+## Option B: split deploy (production, 25MB / 8000px)
 
-Import the repo, framework preset **Nuxt**, Node 20. No `vercel.json` needed (Nitro `vercel` preset). Hobby limits: **~4.5MB request body, 10s execution** — client guards at 4MB, default cap 3000–4000px, AVIF on low effort.
+```bash
+# terminal 1 — backend :3001
+npm install --prefix backend
+PORT=3001 FRONTEND_ORIGIN=http://localhost:3000 node backend/src/index.js
+
+# terminal 2 — frontend :3000 → backend :3001
+NUXT_PUBLIC_API_BASE=http://localhost:3001 pnpm dev
+```
+
+Deploy: frontend → Vercel (Nuxt preset, Node 20, env `NUXT_PUBLIC_API_BASE=https://<backend>`); backend → Fly/Render/VM via `backend/Dockerfile` (`EXPOSE 3001`, env `PORT`, `FRONTEND_ORIGIN=https://<vercel-app>`). No `vercel.json` needed for the frontend.
 
 ## Project layout
 

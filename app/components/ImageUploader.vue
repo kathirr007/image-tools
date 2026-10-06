@@ -39,7 +39,7 @@ function onDrop(e: DragEvent) {
         Drag & drop or <span class="text-primary underline">click to browse</span>
       </p>
       <p class="text-xs text-muted mt-1">
-        JPG · PNG · WebP · AVIF · TIFF — max ~4MB (Vercel Hobby)
+        JPG · PNG · WebP · AVIF · TIFF — max 25MB, 8000px
       </p>
       <input
         ref="inputRef"
