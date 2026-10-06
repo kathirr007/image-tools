@@ -1,1 +1,0 @@
-import{F as e,W as t,kt as n,sn as r}from"./DdRgGEaN.js";import{u as i}from"./BPTfor9_.js";var a={class:`text-sm text-muted`},o=t({__name:`index`,async setup(t){let o,s;return[o,s]=r(()=>i(`/optimize`,{replace:!0})),await o,s(),(t,r)=>(n(),e(`p`,a,` Redirecting to Optimize… `))}});export{o as default};
