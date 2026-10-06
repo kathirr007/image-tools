@@ -9,8 +9,16 @@ function onSelect(f: File) {
 <template>
   <div class="grid gap-4 lg:grid-cols-2">
     <div class="flex flex-col gap-4">
-      <ImageUploader :preview-url="job.previewUrl.value" :file-name="job.file.value?.name ?? null" @select="onSelect" />
-      <OptionsForm mode="optimize" :disabled="!job.file.value || job.isProcessing.value" @run="job.submit" />
+      <ImageUploader
+        :preview-url="job.previewUrl.value"
+        :file-name="job.file.value?.name ?? null"
+        @select="onSelect"
+      />
+      <OptionsForm
+        mode="optimize"
+        :disabled="!job.file.value || job.isProcessing.value"
+        @run="job.submit"
+      />
     </div>
     <div>
       <ResultCompare

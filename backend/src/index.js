@@ -44,8 +44,7 @@ async function handleImage(req, res, { defaultQuality, suffix, requireFormat }) 
   let result
   try {
     result = await processImage(req.file.buffer, options)
-  }
-  catch (err) {
+  } catch (err) {
     throw new HttpError(422, `Could not process image: ${err.message}`)
   }
 
@@ -68,19 +67,17 @@ async function handleImage(req, res, { defaultQuality, suffix, requireFormat }) 
 app.post('/api/v1/optimize', upload.single('image'), async (req, res, next) => {
   try {
     await handleImage(req, res, { defaultQuality: 80, suffix: 'optimized', requireFormat: false })
-  }
-  catch (e) { next(e) }
+  } catch (e) { next(e) }
 })
 
 app.post('/api/v1/convert', upload.single('image'), async (req, res, next) => {
   try {
     await handleImage(req, res, { defaultQuality: 90, suffix: 'converted', requireFormat: true })
-  }
-  catch (e) { next(e) }
+  } catch (e) { next(e) }
 })
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err, _req, res, _next) => {
+  void _next // Express requires 4-arg signature for error middleware
   if (err?.code === 'LIMIT_FILE_SIZE')
     return res.status(413).json({ statusCode: 413, statusMessage: 'File too large (max 25MB)' })
   const status = err instanceof HttpError ? err.statusCode : 500

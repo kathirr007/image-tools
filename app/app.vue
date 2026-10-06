@@ -15,8 +15,14 @@ useSeoMeta({
   <UApp>
     <UHeader>
       <template #left>
-        <NuxtLink to="/optimize" class="flex items-center gap-2 font-semibold">
-          <UIcon name="i-lucide-image" class="size-5" />
+        <NuxtLink
+          to="/optimize"
+          class="flex items-center gap-2 font-semibold"
+        >
+          <UIcon
+            name="i-lucide-image"
+            class="size-5"
+          />
           Image Tools
         </NuxtLink>
         <ToolTabs />

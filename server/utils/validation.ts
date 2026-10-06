@@ -5,12 +5,14 @@ export const ALLOWED_INPUT_FORMATS = new Set(['jpeg', 'jpg', 'png', 'webp', 'avi
 export const ALLOWED_OUTPUT_FORMATS = new Set(['jpeg', 'png', 'webp', 'avif'])
 export const ALLOWED_FITS = new Set(['cover', 'contain', 'inside', 'fill'])
 
+export type ResizeFit = 'cover' | 'contain' | 'inside' | 'fill'
+
 export interface OptimizeOptions {
   format: string // 'original' | jpeg | png | webp | avif
   quality: number // 10-100
   width?: number
   height?: number
-  fit: string
+  fit: ResizeFit
   stripMetadata: boolean
   lossless: boolean
 }
@@ -47,7 +49,7 @@ export function parseOptions(input: Record<string, unknown>, opts: { defaultQual
   const stripMetadata = String(input.stripMetadata ?? 'true') !== 'false'
   const lossless = String(input.lossless ?? 'false') === 'true'
 
-  return { format, quality, width, height, fit, stripMetadata, lossless }
+  return { format, quality, width, height, fit: fit as ResizeFit, stripMetadata, lossless }
 }
 
 export function outputFileName(originalName: string | undefined, format: string, suffix: string): string {

@@ -5,15 +5,15 @@ export default defineNuxtConfig({
     '@nuxt/ui'
   ],
 
+  // SPA tool: no SSR benefit for file-input heavy UI; avoids hydration issues.
+  // Flip to ssr:true later if you add SEO/marketing pages.
+  ssr: false,
+
   devtools: {
     enabled: true
   },
 
   css: ['~/assets/css/main.css'],
-
-  // SPA tool: no SSR benefit for file-input heavy UI; avoids hydration issues.
-  // Flip to ssr:true later if you add SEO/marketing pages.
-  ssr: false,
 
   // Option B split deploy: frontend on Vercel, heavy processing on dedicated backend.
   // Set NUXT_PUBLIC_API_BASE=https://your-backend.fly.dev (no trailing slash).
@@ -24,11 +24,6 @@ export default defineNuxtConfig({
     }
   },
 
-  nitro: {
-    // sharp needs Node runtime (never edge) + room for image buffers
-    preset: 'vercel'
-  },
-
   routeRules: {
     '/': { prerender: true },
     '/optimize': { prerender: true },
@@ -36,6 +31,11 @@ export default defineNuxtConfig({
   },
 
   compatibilityDate: '2026-06-30',
+
+  nitro: {
+    // sharp needs Node runtime (never edge) + room for image buffers
+    preset: 'vercel'
+  },
 
   eslint: {
     config: {

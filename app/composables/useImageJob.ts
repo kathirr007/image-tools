@@ -91,8 +91,7 @@ export function useImageJob(endpoint: '/api/v1/optimize' | '/api/v1/convert') {
         try {
           const j = await res.json()
           msg = j.statusMessage || j.message || msg
-        }
-        catch {
+        } catch {
           msg = await res.text().then(t => t.slice(0, 300) || msg).catch(() => msg)
         }
         throw new Error(msg)
@@ -113,11 +112,9 @@ export function useImageJob(endpoint: '/api/v1/optimize' | '/api/v1/convert') {
         height: h('x-output-height') ?? '',
         fileName: m?.[1] ?? `result.${options.format === 'original' ? 'jpg' : options.format}`
       }
-    }
-    catch (e) {
+    } catch (e) {
       error.value = (e as Error).message
-    }
-    finally {
+    } finally {
       isProcessing.value = false
     }
   }

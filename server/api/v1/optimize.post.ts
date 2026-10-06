@@ -25,8 +25,7 @@ export default defineEventHandler(async (event) => {
   let result
   try {
     result = await processImage(Buffer.from(filePart.data), options)
-  }
-  catch (err) {
+  } catch (err) {
     throw createError({ statusCode: 422, statusMessage: `Could not process image: ${(err as Error).message}` })
   }
 

@@ -3,11 +3,11 @@ import type { OptimizeOptions } from './validation'
 
 export interface ProcessedImage {
   data: Buffer
-  info: sharp.OutputInfo
+  info: { width?: number, height?: number }
   format: string
 }
 
-function detectInputFormat(meta: sharp.Metadata): string {
+function detectInputFormat(meta: { format?: string }): string {
   return (meta.format ?? 'unknown').toLowerCase()
 }
 
@@ -30,7 +30,7 @@ export async function processImage(input: Buffer, options: OptimizeOptions): Pro
     pipeline = pipeline.resize({
       width: options.width,
       height: options.height,
-      fit: options.fit as keyof sharp.FitEnum,
+      fit: options.fit,
       withoutEnlargement: true
     })
   }

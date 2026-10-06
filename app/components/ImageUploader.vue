@@ -34,7 +34,10 @@ function onDrop(e: DragEvent) {
       @dragleave="isDrag = false"
       @drop="onDrop"
     >
-      <UIcon name="i-lucide-upload" class="size-8 mx-auto text-muted" />
+      <UIcon
+        name="i-lucide-upload"
+        class="size-8 mx-auto text-muted"
+      />
       <p class="mt-2 text-sm">
         Drag & drop or <span class="text-primary underline">click to browse</span>
       </p>
@@ -49,8 +52,15 @@ function onDrop(e: DragEvent) {
         @change="onFiles(($event.target as HTMLInputElement).files)"
       >
     </div>
-    <div v-if="previewUrl" class="mt-4">
-      <img :src="previewUrl" alt="original preview" class="max-h-64 mx-auto rounded-lg object-contain">
+    <div
+      v-if="previewUrl"
+      class="mt-4"
+    >
+      <img
+        :src="previewUrl"
+        alt="original preview"
+        class="max-h-64 mx-auto rounded-lg object-contain"
+      >
       <p class="text-xs text-muted text-center mt-2 truncate">
         {{ props.fileName }}
       </p>

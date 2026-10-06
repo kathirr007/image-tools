@@ -48,30 +48,78 @@ const showQuality = computed(() => !['png'].includes(opts.format) || !opts.lossl
       <span class="font-semibold">2 · {{ mode === 'optimize' ? 'Optimization' : 'Conversion' }} options</span>
     </template>
     <div class="flex flex-col gap-4">
-      <UFormField label="Output format" name="format">
-        <USelect v-model="opts.format" :items="formats" value-key="value" class="w-full" />
+      <UFormField
+        label="Output format"
+        name="format"
+      >
+        <USelect
+          v-model="opts.format"
+          :items="formats"
+          value-key="value"
+          class="w-full"
+        />
       </UFormField>
 
-      <UFormField :label="`Quality: ${opts.quality}`" name="quality" :hint="showQuality ? '' : 'PNG lossless ignores quality'">
-        <input v-model.number="opts.quality" type="range" min="10" max="100" class="w-full accent-primary" :disabled="!showQuality">
+      <UFormField
+        :label="`Quality: ${opts.quality}`"
+        name="quality"
+        :hint="showQuality ? '' : 'PNG lossless ignores quality'"
+      >
+        <input
+          v-model.number="opts.quality"
+          type="range"
+          min="10"
+          max="100"
+          class="w-full accent-primary"
+          :disabled="!showQuality"
+        >
       </UFormField>
 
       <div class="grid grid-cols-2 gap-3">
-        <UFormField label="Max width (px)" hint="≤ 4000">
-          <UInput v-model="opts.width" type="number" min="1" max="4000" placeholder="e.g. 1920" />
+        <UFormField
+          label="Max width (px)"
+          hint="≤ 4000"
+        >
+          <UInput
+            v-model="opts.width"
+            type="number"
+            min="1"
+            max="4000"
+            placeholder="e.g. 1920"
+          />
         </UFormField>
-        <UFormField label="Max height (px)" hint="≤ 4000">
-          <UInput v-model="opts.height" type="number" min="1" max="4000" placeholder="e.g. 1080" />
+        <UFormField
+          label="Max height (px)"
+          hint="≤ 4000"
+        >
+          <UInput
+            v-model="opts.height"
+            type="number"
+            min="1"
+            max="4000"
+            placeholder="e.g. 1080"
+          />
         </UFormField>
       </div>
 
       <UFormField label="Resize fit">
-        <USelect v-model="opts.fit" :items="fits" value-key="value" class="w-full" />
+        <USelect
+          v-model="opts.fit"
+          :items="fits"
+          value-key="value"
+          class="w-full"
+        />
       </UFormField>
 
       <div class="flex flex-col gap-2">
-        <USwitch v-model="opts.stripMetadata" label="Strip metadata (smaller + private)" />
-        <USwitch v-model="opts.lossless" label="Lossless (PNG/WebP/AVIF)" />
+        <USwitch
+          v-model="opts.stripMetadata"
+          label="Strip metadata (smaller + private)"
+        />
+        <USwitch
+          v-model="opts.lossless"
+          label="Lossless (PNG/WebP/AVIF)"
+        />
       </div>
 
       <UButton
