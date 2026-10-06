@@ -1,0 +1,32 @@
+{
+  "name": "node-vue-image-optimizer-prod",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@babel/parser": "7.29.7",
+    "@img/colour": "1.1.0",
+    "@img/sharp-win32-x64": "0.35.5",
+    "@vue/compiler-core": "3.5.40",
+    "@vue/compiler-dom": "3.5.40",
+    "@vue/compiler-ssr": "3.5.40",
+    "@vue/reactivity": "3.5.40",
+    "@vue/runtime-core": "3.5.40",
+    "@vue/runtime-dom": "3.5.40",
+    "@vue/server-renderer": "3.5.40",
+    "@vue/shared": "3.5.40",
+    "detect-libc": "2.1.2",
+    "devalue": "5.9.0",
+    "entities": "7.0.1",
+    "estree-walker": "2.0.2",
+    "hookable": "6.1.2",
+    "nostics": "1.2.0",
+    "semver": "7.8.5",
+    "sharp": "0.35.5",
+    "source-map-js": "1.2.1",
+    "ufo": "1.6.4",
+    "unhead": "3.4.1",
+    "vue": "3.5.40",
+    "vue-bundle-renderer": "2.3.1"
+  }
+}
