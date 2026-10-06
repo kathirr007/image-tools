@@ -15,7 +15,7 @@ Target: `node-vue-image-optimizer/` — Nuxt 4 SPA + Nitro server routes + sharp
 - [x] Pages: `index`, `optimize`, `convert`
 - [x] Config: `nuxt.config.ts` (ssr:false, vercel preset, Node runtime), `.gitignore`, README, Vercel notes — in progress
 - [x] Local verify: `npm run dev` smoke + `npm run build` passes — `pnpm build` ✅ (3 routes prerendered, vercel preset, 22MB total); sharp pipeline ✅ (PNG 14KB → WebP 860B, 94% saved)
-- [x] Initial commit — in progress
+- [x] Initial commit — done (`036348b` MVP + `2f38c3b` ignore .vercel)
 - [ ] Initial commit
 
 ## Decisions (confirmed)
