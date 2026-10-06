@@ -10,7 +10,7 @@ Prod limits: 25MB per image, 8000px max dimension, ~50MP pixel guard, 60–120s 
 - [x] Frontend points to backend via `NUXT_PUBLIC_API_BASE` (fallback to Nuxt server routes locally)
 - [x] Raise client cap 4MB → 25MB + copy updates
 - [x] Local verify: backend health + optimize/convert via curl, `pnpm build` passes — ✅
-- [x] Commit split-deploy — in progress
+- [x] Commit split-deploy — done (`93d26f6`)
 
 - [x] Git repo initialized (`master`)
 - [x] Scaffold Nuxt 4 project (compatibilityVersion 4, Node 20, SPA mode) — `ui` template, Nuxt 4.5.2 + @nuxt/ui + Tailwind v4, pnpm
