@@ -1,39 +1,43 @@
 <script setup lang="ts">
-const job = useImageJob('/api/v1/optimize')
+const batch = useImageBatch('/api/v1/optimize')
 
-function onSelect(f: File) {
-  job.setFile(f)
-}
+const runLabel = computed(() => {
+  const n = batch.processableCount.value
+  return n > 0 ? `Optimize ${n} image${n > 1 ? 's' : ''}` : 'Optimize images'
+})
 </script>
 
 <template>
   <div class="grid gap-4 lg:grid-cols-2">
     <div class="flex flex-col gap-4">
       <ImageUploader
-        :preview-url="job.previewUrl.value"
-        :file-name="job.file.value?.name ?? null"
-        @select="onSelect"
+        :items="batch.items.value"
+        @select="batch.addFiles"
+        @remove="batch.removeItem"
+        @clear="batch.clear"
       />
       <OptionsForm
         mode="optimize"
-        :disabled="!job.file.value || job.isProcessing.value"
-        @run="job.submit"
+        :disabled="batch.processableCount.value === 0 || batch.running.value"
+        :run-label="runLabel"
+        @run="batch.submitAll"
       />
     </div>
     <div>
-      <ResultCompare
-        :result-url="job.resultUrl.value"
-        :stats="job.stats.value"
-        :original-size="job.originalSize.value"
-        :processing="job.isProcessing.value"
+      <BatchResults
+        :items="batch.items.value"
+        :running="batch.running.value"
+        :done="batch.summary.value.done"
+        :total="batch.summary.value.total"
+        :total-saved="batch.summary.value.savings"
       />
       <UAlert
-        v-if="job.error.value"
+        v-if="batch.limitWarning.value"
         class="mt-4"
-        color="error"
+        color="warning"
         variant="soft"
         icon="i-lucide-triangle-alert"
-        :title="job.error.value"
+        :title="batch.limitWarning.value"
       />
     </div>
   </div>

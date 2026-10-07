@@ -4,6 +4,7 @@ import type { ToolOptions } from '~/composables/useImageJob'
 const props = defineProps<{
   mode: 'optimize' | 'convert'
   disabled: boolean
+  runLabel?: string
 }>()
 const emit = defineEmits<{ (e: 'run', opts: ToolOptions): void }>()
 
@@ -127,7 +128,7 @@ const showQuality = computed(() => !['png'].includes(opts.format) || !opts.lossl
         size="lg"
         block
         :disabled="disabled"
-        :label="mode === 'optimize' ? 'Optimize image' : 'Convert image'"
+        :label="props.runLabel ?? (mode === 'optimize' ? 'Optimize image' : 'Convert image')"
         @click="emit('run', { ...opts })"
       />
       <p class="text-xs text-muted">
