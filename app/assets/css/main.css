@@ -2,7 +2,10 @@
 @import "@nuxt/ui";
 
 @theme static {
-  --font-sans: 'Public Sans', sans-serif;
+  /* Public Sans first when @nuxt/fonts serves it (normal mode).
+     System stack after it so offline mode (ui.fonts=false) renders
+     with zero network requests and no layout shift. */
+  --font-sans: 'Public Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 
   --color-green-50: #EFFDF5;
   --color-green-100: #D9FBE8;
