@@ -6,7 +6,9 @@ const props = defineProps<{
   disabled: boolean
   runLabel?: string
 }>()
-const emit = defineEmits<{ (e: 'run', opts: ToolOptions): void }>()
+const emit = defineEmits<{
+  (e: 'run' | 'change', opts: ToolOptions): void
+}>()
 
 const formats = props.mode === 'convert'
   ? [
@@ -39,6 +41,10 @@ const opts = reactive<ToolOptions>({
   stripMetadata: true,
   lossless: false
 })
+
+watch(opts, (val) => {
+  emit('change', { ...val })
+}, { immediate: true, deep: true })
 
 const showQuality = computed(() => !['png'].includes(opts.format) || !opts.lossless)
 </script>

@@ -84,6 +84,13 @@ app.use((err, _req, res, _next) => {
   res.status(status).json({ statusCode: status, statusMessage: err?.message ?? 'Internal error' })
 })
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`[backend] listening on :${PORT} (max upload ${(MAX_UPLOAD_BYTES / 1048576).toFixed(0)}MB)`)
 })
+
+// Cloud Run load balancer idle timeout is ~60s. Setting keepAliveTimeout to 65s
+// prevents premature connection drops and 502/503 errors on slow networks.
+server.keepAliveTimeout = 65_000
+server.headersTimeout = 66_000
+// Allow slow client uploads on low connections up to 5 minutes
+server.requestTimeout = 300_000

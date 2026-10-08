@@ -13,16 +13,17 @@ export interface BatchItem {
 }
 
 export const MAX_BATCH_FILES = 10
-const CONCURRENCY = 3
+const CONCURRENCY = 2
 
 let nextId = 1
 
-/** Multi-file batch: one backend request per file, max 3 in flight. */
+/** Multi-file batch: supports both individual and bulk operations. */
 export function useImageBatch(endpoint: '/api/v1/optimize' | '/api/v1/convert') {
   const items = ref<BatchItem[]>([])
   const running = ref(false)
   const limitWarning = ref<string | null>(null)
 
+  const isAnyProcessing = computed(() => items.value.some(i => i.status === 'processing'))
   const processableCount = computed(() => items.value.filter(i => i.status === 'queued' || i.status === 'error').length)
   const doneCount = computed(() => items.value.filter(i => i.status === 'done').length)
   const summary = computed(() => {
@@ -142,8 +143,20 @@ export function useImageBatch(endpoint: '/api/v1/optimize' | '/api/v1/convert') 
       item.status = 'done'
     } catch (e) {
       item.status = 'error'
-      item.error = (e as Error).message
+      const rawMsg = (e as Error).message || ''
+      if (rawMsg.includes('Failed to fetch') || rawMsg.includes('NetworkError') || rawMsg.includes('aborted')) {
+        item.error = 'Network error or connection timeout. On low connections, try processing one image at a time.'
+      } else {
+        item.error = rawMsg
+      }
     }
+  }
+
+  async function submitOne(id: number, options: ToolOptions) {
+    const item = items.value.find(i => i.id === id)
+    if (!item || item.status === 'processing')
+      return
+    await processOne(item, options)
   }
 
   async function submitAll(options: ToolOptions) {
@@ -165,5 +178,5 @@ export function useImageBatch(endpoint: '/api/v1/optimize' | '/api/v1/convert') 
     }
   }
 
-  return { items, running, limitWarning, processableCount, doneCount, summary, addFiles, removeItem, clear, submitAll }
+  return { items, running, isAnyProcessing, limitWarning, processableCount, doneCount, summary, addFiles, removeItem, clear, submitAll, submitOne }
 }

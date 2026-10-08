@@ -9,6 +9,9 @@ defineProps<{
   total: number
   totalSaved: number
 }>()
+const emit = defineEmits<{
+  (e: 'retry', id: number): void
+}>()
 </script>
 
 <template>
@@ -17,26 +20,12 @@ defineProps<{
       <span class="font-semibold">3 · Results & downloads ({{ done }}/{{ total }})</span>
     </template>
     <div
-      v-if="running && done === 0"
-      class="text-center py-8"
-    >
-      <UIcon
-        name="i-lucide-loader-circle"
-        class="size-8 animate-spin mx-auto"
-      />
-      <p class="text-sm text-muted mt-2">
-        Processing images…
-      </p>
-    </div>
-    <div
-      v-else-if="total > 0"
+      v-if="total > 0"
       class="flex flex-col gap-3"
     >
-      <div
-        v-if="done > 0"
-        class="flex flex-wrap gap-2"
-      >
+      <div class="flex flex-wrap items-center gap-2">
         <UBadge
+          v-if="done > 0"
           color="success"
           variant="soft"
         >
@@ -47,6 +36,13 @@ defineProps<{
           variant="soft"
         >
           {{ done }} of {{ total }} ready
+        </UBadge>
+        <UBadge
+          v-if="running"
+          color="info"
+          variant="soft"
+        >
+          Processing…
         </UBadge>
       </div>
       <div
@@ -97,6 +93,17 @@ defineProps<{
             Download {{ item.stats.fileName }}
           </UButton>
         </a>
+        <UButton
+          v-else-if="item.status === 'error'"
+          icon="i-lucide-refresh-cw"
+          size="sm"
+          color="error"
+          variant="soft"
+          block
+          @click="emit('retry', item.id)"
+        >
+          Retry this image
+        </UButton>
       </div>
     </div>
     <div

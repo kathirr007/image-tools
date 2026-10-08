@@ -4,10 +4,11 @@ import { formatBytes } from '~/composables/useImageJob'
 
 defineProps<{
   items: BatchItem[]
+  mode?: 'optimize' | 'convert'
 }>()
 const emit = defineEmits<{
   (e: 'select', files: File[]): void
-  (e: 'remove', id: number): void
+  (e: 'remove' | 'runOne', id: number): void
   (e: 'clear'): void
 }>()
 
@@ -111,6 +112,55 @@ function statusColor(s: BatchItem['status']) {
               aria-label="Remove image"
               @click="emit('remove', item.id)"
             />
+          </div>
+          <div class="mt-2 pt-1 border-t border-muted/20">
+            <UButton
+              v-if="item.status === 'queued'"
+              size="xs"
+              variant="subtle"
+              block
+              :icon="mode === 'convert' ? 'i-lucide-arrow-right-left' : 'i-lucide-sparkles'"
+              @click="emit('runOne', item.id)"
+            >
+              {{ mode === 'convert' ? 'Convert' : 'Optimize' }}
+            </UButton>
+            <UButton
+              v-else-if="item.status === 'processing'"
+              size="xs"
+              variant="subtle"
+              block
+              loading
+              disabled
+            >
+              Processing…
+            </UButton>
+            <UButton
+              v-else-if="item.status === 'error'"
+              size="xs"
+              color="error"
+              variant="soft"
+              block
+              icon="i-lucide-refresh-cw"
+              @click="emit('runOne', item.id)"
+            >
+              Retry
+            </UButton>
+            <div
+              v-else-if="item.status === 'done'"
+              class="flex items-center justify-center gap-1 text-xs text-success py-0.5"
+            >
+              <UIcon
+                name="i-lucide-check-circle"
+                class="size-3.5"
+              />
+              <span>Done</span>
+            </div>
+            <div
+              v-else-if="item.status === 'skipped'"
+              class="text-center text-xs text-error py-0.5"
+            >
+              Exceeds 25MB
+            </div>
           </div>
         </div>
       </div>
